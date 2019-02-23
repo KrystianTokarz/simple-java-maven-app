@@ -14,7 +14,7 @@ pipeline {
        stage('Example') {
                 steps {
                     echo "${params.Greeting} World!"
-                    echo "I said, Hello Mr. ${username} on ${env.JENKINS_URL}""
+                    echo "I said, Hello Mr. ${username} on ${env.JENKINS_URL}"
                 }
             }
 
