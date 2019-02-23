@@ -32,7 +32,11 @@ pipeline {
             }
         }
          stage('Deliver') {
-
+                    when {
+                       expression {
+                         currentBuild.result == null || currentBuild.result == 'UNSTABLE'
+                       }
+                     }
                     steps {
 
                         bat './jenkins/scripts/deliver.bat'
