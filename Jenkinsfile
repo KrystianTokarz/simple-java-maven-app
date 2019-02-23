@@ -32,11 +32,7 @@ pipeline {
             }
         }
          stage('Deliver') {
-                    when {
-                       expression {
-                         currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                       }
-                     }
+
                     steps {
 
                         bat './jenkins/scripts/deliver.bat'
