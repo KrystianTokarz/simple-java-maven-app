@@ -1,6 +1,23 @@
+def username = 'Jenkins'
+
 pipeline {
     agent any
+      environment {
+            AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+            AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+        }
+     parameters {
+            string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+        }
+
     stages {
+       stage('Example') {
+                steps {
+                    echo "${params.Greeting} World!"
+                    echo "I said, Hello Mr. ${username} on ${env.JENKINS_URL}""
+                }
+            }
+
         stage('Build') {
             steps {
                 bat 'mvn -B -DskipTests clean package'
@@ -18,9 +35,15 @@ pipeline {
             }
         }
          stage('Deliver') {
+                    when {
+                       expression {
+                         currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                       }
+                     }
                     steps {
+
                         bat './jenkins/scripts/deliver.bat'
-                    }
+                     }
                 }
 
     }
